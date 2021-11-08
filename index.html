@@ -1,7 +1,6 @@
 <!doctype html>
 <html>
 <head>
-    <title>University Search</title>
     <meta charset="utf-8"/>
     <style>
         body {
@@ -18,23 +17,23 @@
 			
 			request = new XMLHttpRequest();
 
- 			uni = document.forms[0].word.value;
-			request.open("GET", "https://universities.hipolabs.com/search?name="+uni, true);
+ 			zip = document.forms[0].word.value;
+			request.open("GET", "https://api.zippopotam.us/us/"+zip, true);
 
 			request.onreadystatechange = function() {
  
 				if (request.readyState == 4 && 
 					request.status == 200) 
 				{
-                    result = request.responseText;
-					data = JSON.parse(result);
-					// document.getElementById("display").innerHTML = result;	
-                    document.getElementById("alpha_two_code").innerHTML = "Alpha Two Code: " + data[0].alpha_two_code;
-                    document.getElementById("web_pages").innerHTML = "Web Pages: " + data[0].web_pages;
-                    document.getElementById("name").innerHTML = "Name: " + data[0].name;
-                    document.getElementById("country").innerHTML = "Country: " + data[0].country;
-                    document.getElementById("domains").innerHTML = "Domains: " + data[0].domains;
-                    document.getElementById("state-province").innerHTML = "State/Province: " + data[0].state-province;
+					data = JSON.parse(request.responseText);
+                    document.getElementById("post code").innerHTML = "Post Code: " + data["post code"];
+                    document.getElementById("country").innerHTML = "Name: " + data.country;
+                    document.getElementById("country abbreviation").innerHTML = "Country Abbreviation: " + data["country abbreviation"];
+                    document.getElementById("place name").innerHTML = "Place Name: " + data.places[0]["place name"];
+                    document.getElementById("longitude").innerHTML = "Longitude: " + data.places[0].longitude;
+                    document.getElementById("state").innerHTML = "State: " + data.places[0].state;
+                    document.getElementById("state abbreviation").innerHTML = "State Abbreviation: " + data.places[0]["state abbreviation"];
+                    document.getElementById("latitude").innerHTML = "Latitude: " + data.places[0].latitude;
 				}
 				else if (request.readyState == 4 && request.status != 200) 
 				{
@@ -48,26 +47,28 @@
 
 <body>
 
-    <h1>University Domains and Names API</h1>
-    <form>Pick a word: <input type = 'text' name = 'word'>
+    <h1>Zip Code Search</h1>
+    <form>Enter a zip code: <input type = 'text' name = 'word'>
 		<input type = "button" value = "Search"
 			onclick="loadData()">
 	</form>
     <div class="display" id="display">
-        <p id="alpha_two_code"></div>
-        <p id="web_pages"></div>
-        <p id="name"></div>
-        <p id="country"></div>
-        <p id="domains"></div>
-        <p id="state-province"></div>
+        <p id="post code"></p>
+        <p id="country"></p>
+        <p id="country abbreviation"></p>
+        <p id="place name"></p>
+        <p id="longitude"></p>
+        <p id="state"></p>
+        <p id="state abbreviation"></p>
+        <p id="latitude"></p>
     </div>
     <br>
     <div class="info">
-        <p>This API presents the basic information of a given university, presented above</p>
-        <p>https://github.com/Hipo/university-domains-list-api</p>
+        <p>This API presents the basic information of a zip code, presented above</p>
+        <p>Where I found the API: https://mixedanalytics.com/blog/list-actually-free-open-no-auth-needed-apis/</p>
         <p>I usde XMLRequest for the API request</p>
-        <p>This API would be helpful for services that work with universities, e.g. Nike which provides gear for student athletes.
-            It can also be helpful for students who are applying to colleges, allowing them to quickly locate basic information about a certain univesity.
+        <p>This API can be helpful for postal workers, who want to get a general idea of the place they are delivering to. 
+            It is also a good way of learning about a place remotely, out of pure curiosity.
         </p>
     </div>
 </body>
